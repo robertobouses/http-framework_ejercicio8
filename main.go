@@ -78,8 +78,9 @@ func main() {
 	})
 
 	//hacer un endpoint que permita borrar los que tienen vacío en el id
-	server.DELETE("/empty")
 
+	server.DELETE("/empty")
+	//borrar todos
 	server.DELETE("/all")
 
 	port := ":8080"
