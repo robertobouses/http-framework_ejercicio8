@@ -16,6 +16,7 @@ type HTTP interface {
 	DeleteMeasurement(ctx *gin.Context, id string)
 	GetCubic(ctx *gin.Context, id string)
 	GetScale(ctx *gin.Context, id string)
+	PostCompare(ctx *gin.Context)
 }
 
 type http struct {
@@ -94,4 +95,35 @@ func (h *http) GetScale(ctx *gin.Context, id string) {
 	}
 
 	ctx.JSON(nethttp.StatusOK, gin.H{"solution": solution})
+}
+
+func (h *http) PostCompare(ctx *gin.Context) {
+	var measurementRequest entity.MeasurementRequest
+	if err := ctx.ShouldBindJSON(&measurementRequest); err != nil {
+		ctx.JSON(nethttp.StatusBadRequest, gin.H{"error al hacer ShouldBindJSON": err.Error()})
+		return
+	}
+
+	if len(measurementRequest.IDs) < 2 {
+		ctx.JSON(nethttp.StatusBadRequest, gin.H{"error": "Se requieren al menos 2 IDs para comparar"})
+		return
+	}
+
+	var cubicResults []int
+	for _, id := range measurementRequest.IDs {
+		cubic, err := h.service.CalcCubic(id)
+		if err != nil {
+			log.Printf("Error al calcular el cubo para ID %s: %v", id, err)
+			ctx.JSON(nethttp.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		cubicResults = append(cubicResults, cubic)
+	}
+
+	minCubic, maxCubic := h.service.FindMinAndMaxCubic(cubicResults)
+
+	ctx.JSON(nethttp.StatusOK, gin.H{
+		"min_cubic": minCubic,
+		"max_cubic": maxCubic,
+	})
 }

@@ -12,6 +12,7 @@ type APP interface {
 	PrintMeasurement() ([]entity.Measurement, error)
 	DeleteMeasurement(id string) error
 	CalcCubic(id string) (int, error)
+	FindMinAndMaxCubic(cubics []int) (int, int)
 }
 
 type service struct {
@@ -56,4 +57,24 @@ func (s *service) CalcCubic(id string) (int, error) {
 	}
 	cubic := measurement.ValorX * measurement.ValorY * measurement.ValorZ
 	return cubic, nil
+}
+
+func (s *service) FindMinAndMaxCubic(cubics []int) (int, int) {
+	if len(cubics) == 0 {
+		return 0, 0
+	}
+
+	minCubic := cubics[0]
+	maxCubic := cubics[0]
+
+	for _, cubic := range cubics {
+		if cubic < minCubic {
+			minCubic = cubic
+		}
+		if cubic > maxCubic {
+			maxCubic = cubic
+		}
+	}
+
+	return minCubic, maxCubic
 }

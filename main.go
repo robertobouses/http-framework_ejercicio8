@@ -72,7 +72,10 @@ func main() {
 		httpController.GetScale(ctx, id)
 	})
 
-	//server.GET(CON PETICIONES)
+	server.POST("/compare", func(ctx *gin.Context) {
+		httpController.PostCompare(ctx)
+
+	})
 
 	port := ":8080"
 	log.Printf("Escuchando en el puerto%s\n", port)
