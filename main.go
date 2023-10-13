@@ -77,6 +77,11 @@ func main() {
 
 	})
 
+	//hacer un endpoint que permita borrar los que tienen vacío en el id
+	server.DELETE("/empty")
+
+	server.DELETE("/all")
+
 	port := ":8080"
 	log.Printf("Escuchando en el puerto%s\n", port)
 
