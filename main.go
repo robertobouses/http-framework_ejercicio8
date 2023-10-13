@@ -48,9 +48,31 @@ func main() {
 
 	server := gin.Default()
 
-	server.POST("/medicion", func(ctx *gin.Context) {
+	server.POST("/measurement", func(ctx *gin.Context) {
 		httpController.PostMeasurement(ctx)
 	})
+
+	server.GET("/measurements", func(ctx *gin.Context) {
+		httpController.GetMeasurement(ctx)
+	})
+
+	server.DELETE("/measurement/:id", func(ctx *gin.Context) {
+		id := ctx.Param("id")
+		httpController.DeleteMeasurement(ctx, id)
+
+	})
+
+	server.GET("/cubic/:id", func(ctx *gin.Context) {
+		id := ctx.Param("id")
+		httpController.GetCubic(ctx, id)
+	})
+
+	server.GET("/scale/:id", func(ctx *gin.Context) {
+		id := ctx.Param("id")
+		httpController.GetScale(ctx, id)
+	})
+
+	//server.GET(CON PETICIONES)
 
 	port := ":8080"
 	log.Printf("Escuchando en el puerto%s\n", port)

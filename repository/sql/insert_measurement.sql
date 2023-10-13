@@ -1,1 +1,1 @@
-INSERT INTO arithmetic.measurements(valorx, valory, valorz) VALUES($1, $2, $3)
+INSERT INTO arithmetic.measurements(id, valorx, valory, valorz) VALUES($1, $2, $3, $4)
