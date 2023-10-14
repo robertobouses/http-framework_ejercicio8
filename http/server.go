@@ -17,6 +17,7 @@ type HTTP interface {
 	GetCubic(ctx *gin.Context, id string)
 	GetScale(ctx *gin.Context, id string)
 	PostCompare(ctx *gin.Context)
+	DeleteAllMeasurement(ctx *gin.Context)
 }
 
 type http struct {
@@ -126,4 +127,13 @@ func (h *http) PostCompare(ctx *gin.Context) {
 		"min_cubic": minCubic,
 		"max_cubic": maxCubic,
 	})
+}
+
+func (h *http) DeleteAllMeasurement(ctx *gin.Context) {
+	err := h.service.DeleteAllMeasurement()
+	if err != nil {
+		log.Print("Error al llamar http a app. Función delete", err)
+		ctx.JSON(nethttp.StatusBadRequest, gin.H{"error": err.Error()})
+	}
+	ctx.JSON(nethttp.StatusOK, "se ha borrado correctamente")
 }

@@ -79,9 +79,11 @@ func main() {
 
 	//hacer un endpoint que permita borrar los que tienen vacío en el id
 
-	server.DELETE("/empty")
-	//borrar todos
-	server.DELETE("/all")
+	//server.DELETE("/empty", func(ctx *gin.Context))
+
+	server.DELETE("/all", func(ctx *gin.Context) {
+		httpController.DeleteAllMeasurement(ctx)
+	})
 
 	port := ":8080"
 	log.Printf("Escuchando en el puerto%s\n", port)

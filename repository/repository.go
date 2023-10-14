@@ -14,6 +14,7 @@ type REPOSITORY interface {
 	ExtractMeasurement() ([]entity.Measurement, error)
 	DeleteMeasurement(id string) error
 	ExtractMeasurementId(id string) (entity.Measurement, error)
+	DeleteAllMeasurement() error
 }
 
 type repository struct {
@@ -33,8 +34,11 @@ var extractMeasurementQuery string
 //go:embed sql/delete_measurement.sql
 var deleteMeasurementQuery string
 
-//go:embed sql/extractid_measuremente.sql
+//go:embed sql/extractid_measurement.sql
 var extractIdMeasurementQuery string
+
+//go:embed sql/deleteall_measurement.sql
+var deleteAllMeasurementQuery string
 
 func NewRepository(db *sql.DB) (*repository, error) {
 	insertStmt, err := db.Prepare(insertMeasurementQuery)
@@ -119,4 +123,9 @@ func (r *repository) ExtractMeasurementId(id string) (entity.Measurement, error)
 	}
 
 	return measurement, nil
+}
+
+func (r *repository) DeleteAllMeasurement() error {
+	_, err := r.db.Exec(deleteAllMeasurementQuery)
+	return err
 }
