@@ -18,6 +18,7 @@ type HTTP interface {
 	GetScale(ctx *gin.Context, id string)
 	PostCompare(ctx *gin.Context)
 	DeleteAllMeasurement(ctx *gin.Context)
+	DeleteEmptyMeasurement(ctx *gin.Context)
 }
 
 type http struct {
@@ -136,4 +137,13 @@ func (h *http) DeleteAllMeasurement(ctx *gin.Context) {
 		ctx.JSON(nethttp.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 	ctx.JSON(nethttp.StatusOK, "se ha borrado correctamente")
+}
+
+func (h *http) DeleteEmptyMeasurement(ctx *gin.Context) {
+	err := h.service.DeleteEmptyMeasurement()
+	if err != nil {
+		log.Print("Error al llamar http a app. Función delete", err)
+		ctx.JSON(nethttp.StatusBadRequest, gin.H{"error": err.Error()})
+	}
+	ctx.JSON(nethttp.StatusOK, "se han borrado los registros con partes vacías correctamente")
 }

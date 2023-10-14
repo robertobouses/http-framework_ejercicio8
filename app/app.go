@@ -14,6 +14,7 @@ type APP interface {
 	CalcCubic(id string) (int, error)
 	FindMinAndMaxCubic(cubics []int) (int, int)
 	DeleteAllMeasurement() error
+	DeleteEmptyMeasurement() error
 }
 
 type service struct {
@@ -81,6 +82,15 @@ func (s *service) FindMinAndMaxCubic(cubics []int) (int, int) {
 }
 
 func (s *service) DeleteAllMeasurement() error {
+	err := s.repo.DeleteAllMeasurement()
+	if err != nil {
+		log.Print("Error", err)
+		return err
+	}
+	return nil
+}
+
+func (s *service) DeleteEmptyMeasurement() error {
 	err := s.repo.DeleteAllMeasurement()
 	if err != nil {
 		log.Print("Error", err)

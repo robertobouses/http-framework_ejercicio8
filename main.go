@@ -79,7 +79,9 @@ func main() {
 
 	//hacer un endpoint que permita borrar los que tienen vacío en el id
 
-	//server.DELETE("/empty", func(ctx *gin.Context))
+	server.DELETE("/empty", func(ctx *gin.Context) {
+		httpController.DeleteEmptyMeasurement(ctx)
+	})
 
 	server.DELETE("/all", func(ctx *gin.Context) {
 		httpController.DeleteAllMeasurement(ctx)
