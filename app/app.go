@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/robertobouses/http-framework_ejercicio8/entity"
@@ -27,9 +28,20 @@ func NewAPP(repo repository.REPOSITORY) APP {
 	}
 }
 
-func (s *service) CreateMeasurement(newMedicion entity.Measurement) error {
-	return s.repo.InsertMeasurement(newMedicion)
+func (s *service) CreateMeasurement(newMeasurement entity.Measurement) error {
 
+	existingMeasurement, err := s.repo.ExtractMeasurementId(newMeasurement.Id)
+	if err != nil {
+
+		return err
+	}
+
+	if existingMeasurement.Id != "" {
+
+		return fmt.Errorf("El registro con ID %s ya existe", newMeasurement.Id)
+	}
+
+	return s.repo.InsertMeasurement(newMeasurement)
 }
 
 func (s *service) PrintMeasurement() ([]entity.Measurement, error) {
