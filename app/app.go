@@ -91,7 +91,7 @@ func (s *service) DeleteAllMeasurement() error {
 }
 
 func (s *service) DeleteEmptyMeasurement() error {
-	err := s.repo.DeleteAllMeasurement()
+	err := s.repo.DeleteEmptyMeasurement()
 	if err != nil {
 		log.Print("Error", err)
 		return err

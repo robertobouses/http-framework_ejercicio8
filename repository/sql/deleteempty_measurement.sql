@@ -1,3 +1,4 @@
-DELETE FROM arithmetic.measurements
+--deleteempty_measurement.sql:
 
-WHERE (entity IS NULL OR entity = '') AND (id IS NULL OR id = '');
+DELETE FROM arithmetic.measurements
+WHERE id IS NULL OR id = '';
